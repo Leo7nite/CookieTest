@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GDPR Consent Test</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="chatgpt.js" defer></script>
+    <script src="/JavaScript/chatgpt.js" defer></script>
     <!-- Ensure correct path -->
      
   </head>
-  <body style="background: #151515; min-height: 300vh;">
+  <body style="background: #151515;">
     <h1 style="color: white;">testTest</h1>
     <div class="gdpr-disclaimer" style="color: white;">This website uses cookies...</div>
     <button class="gdpr-button">Open Cookie Settings</button>
@@ -27,10 +27,92 @@
       </div>
       <button class="gb-save">Save Preferences</button>
     </div>
-<form id="test-form" name="test-form">
-    <input type="text" id="test-input" name="test-input" placeholder="Enter your name">
-    <button type="submit">Submit</button>
-</form>
+
+
+    <form id="test-form" name="test-form">
+      <input type="text" id="test-input" name="test-input" placeholder="Enter your name">
+      <button type="submit">Submit</button>
+  </form>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+    <aside class="gdpr-cookies">
+      <div class="gdpr-button">
+         <span></span>
+      </div>
+      <div class="gdpr-disclaimer">
+         <div class="gdpr-container">
+          <strong>{{crIntro}}</strong>
+          <p>{{& crSummary}}
+           <a href="javascript:;" class="gdpr_openCookieSetting">{{crSummary1}}.</a>
+          </p>
+          <div class="gdpr-quick-setting">
+           <ul>
+            <li class="gqs-cookie-opt gqs-1 active"><span>{{crPurpose1}}</span></li>
+            <li class="gqs-cookie-opt gqs-2" data-type="analytics"><span>{{crPurpose2}}</span></li>
+            <li class="gqs-cookie-opt gqs-3" data-type="social"><span>{{crPurpose3}}</span></li>
+            <li class="gqs-cookie-opt gqs-4" data-type="advertising"><span>{{crPurpose4}}</span></li>
+            <li class="gqs-sep"></li>
+            <li class="gqs-link"><a class="gdpr_openCookieSetting" href="javascript:;">{{crMore}}</a></li>
+            <li class="gqs-link gqs-accept"><a class="gdpr-button-1 gb-save" href="javascript:;">{{crSave}}</a></li>
+           </ul>
+          </div>
+          <p class="gdpr_close"><a href="javascript:;">{{crClose}}</a></p>
+         </div>
+      </div>
+      <div class="gdpr-content">
+         <div class="gdpr-content-wrapper">
+          <div class="gdpr-title">{{& crToolbarSetting}}</div>
+          <div class="gdpr-description">{{& crSettingDescription}}</div>
+          <div class="gdpr-cookie-options-wrapper">
+           <div class="gdpr-cookie-options">
+            <div class="gdpr-option go-1">
+               <!-- option 1 -->
+               <div class="gdpr-option-txt">
+                {{& crOptionCookieTxt1}}
+                <div class="gdpr-opt-selection opt-ever">
+                 {{& crSelectinCookieTxt1}}
+                </div>
+               </div>
+               <!-- option 1 -->
+            </div>
+            <div class="gdpr-option go-2">
+               <!-- option 2 -->
+               <div class="gdpr-option-txt gdpr-notAccepted">
+                {{& crOptionCookieTxt2}}
+                <ul>
+                  <li class="gdpr-select" data-type="analytics"><p><strong>{{crPurpose2}}</strong>{{crAnalyticsDesc}}</p></li>
+                  <li class="gdpr-select" data-type="social"><p><strong>{{crPurpose3}}</strong>{{crSocialDesc}}</p></li>
+                  <li class="gdpr-select" data-type="advertising"><p><strong>{{crPurpose4}}</strong>{{crAdvertisingDesc}}</p></li>
+                </ul>
+                <div class="gdpr-opt-selection opt-in-out" id="gdpr-opt-2">
+                 <span>{{& crSelectinCookieTxt2}}</span> 
+                </div>
+               </div>
+               <!-- option 2 -->
+            </div>
+           </div>
+          </div>
+          <div class="gdpr-cookie-buttons">
+          <p>
+            {{& crLinkToPrivacy}} <a id="gdpr-link-privacy" href="javascript:;" target="_blank">{{crLinkToPrivacyTitle}}</a>.
+            <br />
+            {{& crLinkToCookie}} <a id="gdpr-link-cookie-page" href="javascript:;" target="_blank">{{crLinkToCookieTitle}}</a>.
+          </p>
+          <div class="gdpr-buttons ok-1 ok-2">
+            <button class="gdpr-button-1 gb-close">{{crClose}}</button>
+            <button class="gdpr-button-1 gb-save gdpr-follow">{{crSave}}</button>
+          </div>
+          </div>
+         </div>
+      </div>
+     </aside>
+    
 <!-- Google tag (gtag.js) -->
 
 

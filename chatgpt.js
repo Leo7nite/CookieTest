@@ -17,6 +17,7 @@ $(document).ready(function() {
         exdate.setDate(exdate.getDate() + exdays);
         var c_value = encodeURIComponent(value) + ((exdays === null) ? "" : "; expires=" + exdate.toUTCString());
         document.cookie = c_name + "=" + c_value + "; path=/";
+        console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
     }
 
     function getCookieValue(name) {
@@ -47,12 +48,15 @@ $(document).ready(function() {
         }
         script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script);
+        console.log(`Script loaded: ${url}`);
     }
 
     function loadGoogleAnalytics() {
         // Get consent values
         const analyticsConsent = getCookieValue("cc_analytics") === "1";
         const advertisingConsent = getCookieValue("cc_advertising") === "1";
+
+        console.log(`Analytics consent: ${analyticsConsent}, Advertising consent: ${advertisingConsent}`);
 
         // Initialize Google Analytics with Consent Mode
         window.dataLayer = window.dataLayer || [];
@@ -71,6 +75,7 @@ $(document).ready(function() {
             gtag('config', 'G-9D3DBN91CX', {
                 'anonymize_ip': true
             });
+            console.log("Google Analytics initialized");
         });
     }
 

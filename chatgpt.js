@@ -18,7 +18,7 @@ $(document).ready(function() {
         var c_value = encodeURIComponent(value) + 
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
                       "; path=/; domain=" + window.location.hostname + 
-                      "; SameSite=None; Secure; HttpOnly";
+                      "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
     }

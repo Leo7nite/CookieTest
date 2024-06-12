@@ -179,10 +179,15 @@ $(document).ready(function() {
             return obj;
         }, {});
 
-        window.dataLayer.push({
-            'event': 'formSubmission',
-            'formName': formName,
-            'formData': formData
+        // window.dataLayer.push({
+        //     'event': 'formSubmission',
+        //     'formName': formName,
+        //     'formData': formData
+        // });
+        gtag('event', 'formSubmission', {
+            'event_category': 'Forms',
+            'event_label': formName,
+            'value': formData
         });
     });
 
@@ -204,15 +209,15 @@ $(document).ready(function() {
     });
 
     // Custom event example
-    function triggerCustomEvent() {
-        window.dataLayer.push({
-            'event': 'myCustomEvent',
-            'customData': {
-                'field1': 'value1',
-                'field2': 'value2'
-            }
-        });
-    }
+    // function triggerCustomEvent() {
+    //     window.dataLayer.push({
+    //         'event': 'myCustomEvent',
+    //         'customData': {
+    //             'field1': 'value1',
+    //             'field2': 'value2'
+    //         }
+    //     });
+    // }
 
     loadConsent();
 });

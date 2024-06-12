@@ -179,16 +179,13 @@ $(document).ready(function() {
             return obj;
         }, {});
 
-        // window.dataLayer.push({
-        //     'event': 'formSubmission',
-        //     'formName': formName,
-        //     'formData': formData
-        // });
-        gtag('event', 'formSubmission', {
-            'event_category': 'Forms',
-            'event_label': formName,
-            'value': formData
+        window.dataLayer.push({
+            'event': 'formSubmission',
+            'formName': formName,
+            'formData': formData
         });
+
+        console.log("Form submission event pushed:", formName, formData);
     });
 
     // Search query event

@@ -61,25 +61,27 @@ $(document).ready(function() {
 
         console.log(`Analytics consent: ${analyticsConsent}, Advertising consent: ${advertisingConsent}`);
 
-        // Initialize Google Analytics with Consent Mode
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        if (analyticsConsent || advertisingConsent) {
+            // Initialize Google Analytics with Consent Mode
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
 
-        gtag('consent', 'default', {
-            'ad_storage': advertisingConsent ? 'granted' : 'denied',
-            'analytics_storage': analyticsConsent ? 'granted' : 'denied'
-        });
-
-        // Load the gtag.js script
-        cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
-            gtag('js', new Date());
-            gtag('config', 'G-9D3DBN91CX', {
-                'anonymize_ip': true
+            gtag('consent', 'default', {
+                'ad_storage': advertisingConsent ? 'granted' : 'denied',
+                'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
-            console.log("Google Analytics initialized");
-        });
+
+            // Load the gtag.js script
+            cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
+                gtag('js', new Date());
+                gtag('config', 'G-9D3DBN91CX', {
+                    'anonymize_ip': true
+                });
+                console.log("Google Analytics initialized");
+            });
+        }
     }
 
     function saveConsent() {

@@ -15,8 +15,11 @@ $(document).ready(function() {
     function setCookie(c_name, value, exdays) {
         var exdate = new Date();
         exdate.setDate(exdate.getDate() + exdays);
-        var c_value = encodeURIComponent(value) + ((exdays === null) ? "" : "; expires=" + exdate.toUTCString());
-        document.cookie = c_name + "=" + c_value + "; path=/";
+        var c_value = encodeURIComponent(value) + 
+                      ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
+                      "; path=/; domain=" + window.location.hostname + 
+                      "; SameSite=None; Secure";
+        document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
     }
 
@@ -34,14 +37,14 @@ $(document).ready(function() {
     function cookieScriptLoadJavaScript(url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) {  //IE
+        if (script.readyState) {  // IE
             script.onreadystatechange = function () {
                 if (script.readyState === "loaded" || script.readyState === "complete") {
                     script.onreadystatechange = null;
                     if (callback) callback();
                 }
             };
-        } else {  //Others
+        } else {  // Others
             script.onload = function () {
                 if (callback) callback();
             };

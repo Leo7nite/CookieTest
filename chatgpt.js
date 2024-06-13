@@ -8,8 +8,8 @@ $(document).ready(function() {
     const saveButton = $('.gb-save');
 
     let consent = {
-      analytics: false,
-      advertising: false
+        analytics: false,
+        advertising: false
     };
 
     function setCookie(c_name, value, exdays) {
@@ -65,6 +65,8 @@ $(document).ready(function() {
             function gtag() {
                 dataLayer.push(arguments);
             }
+
+            window.gtag = gtag; // Ensure gtag is globally accessible
 
             gtag('consent', 'default', {
                 'ad_storage': advertisingConsent ? 'granted' : 'denied',

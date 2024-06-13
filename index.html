@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,20 +24,21 @@
         }
     </style>
 </head>
-<body>
+<body cz-shortcut-listen="true">
     <h1>Cookie Consent Example</h1>
 
-    <div id="cookie-consent-banner">
+    <div id="cookie-consent-banner" style="display: none;">
         <p>We use cookies to enhance your browsing experience. Please provide your consent for the following:</p>
         <div>
             <label>
-                <input type="checkbox" id="analytics-consent" />
+                <input type="checkbox" id="analytics-consent">
                 Allow analytics cookies
             </label>
         </div>
         <button onclick="submitConsent()">Submit</button>
     </div>
 
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=G-9D3DBN91CX"></script>
     <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
@@ -86,8 +86,10 @@
         });
 
         // GA4 configuration (your measurement ID)
-        gtag('config', 'G-9D3DBN91CX');
+        gtag('config', 'G-9D3DBN91CX', {
+            'send_page_view': true,
+            'send_event': true
+        });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX"></script>
 </body>
 </html>

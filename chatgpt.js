@@ -8,8 +8,8 @@ $(document).ready(function() {
     const saveButton = $('.gb-save');
 
     let consent = {
-        analytics: false,
-        advertising: false
+      analytics: false,
+      advertising: false
     };
 
     function setCookie(c_name, value, exdays) {
@@ -55,60 +55,66 @@ $(document).ready(function() {
     }
 
     function loadGoogleAnalytics() {
+        // Get consent values
         const analyticsConsent = getCookieValue("cc_analytics") === "1";
         const advertisingConsent = getCookieValue("cc_advertising") === "1";
 
         console.log(`Analytics consent: ${analyticsConsent}, Advertising consent: ${advertisingConsent}`);
 
         if (analyticsConsent || advertisingConsent) {
+            // Initialize Google Analytics with Consent Mode
             window.dataLayer = window.dataLayer || [];
             function gtag() {
                 dataLayer.push(arguments);
             }
-
-            window.gtag = gtag; // Ensure gtag is globally accessible
 
             gtag('consent', 'default', {
                 'ad_storage': advertisingConsent ? 'granted' : 'denied',
                 'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
 
+            // Load the gtag.js script
             cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
-                window.dataLayer = window.dataLayer || [];
                 gtag('js', new Date());
                 gtag('config', 'G-9D3DBN91CX', {
                     'anonymize_ip': true
                 });
-                setUserProperties();
                 console.log("Google Analytics initialized");
-            });
-        }
-    }
-
-    function setUserProperties() {
-        if (consent.analytics || consent.advertising) {
-            gtag('set', 'user_properties', {
-                'user_id': 'USER_ID',
-                'user_type': 'premium'
             });
         }
     }
 
     function saveConsent() {
         console.log("Saving consent:", consent);
+    
+        // Update cookies based on consent
         setCookie("cc_analytics", consent.analytics ? "1" : "0", 365);
         setCookie("cc_advertising", consent.advertising ? "1" : "0", 365);
-        localStorage.setItem('gdprConsent', JSON.stringify(consent));
+    
+        // Delete cookies if consent is denied
+        if (!consent.analytics) {
+            setCookie("cc_analytics", "", -1); // Set expiry in the past to delete cookie
+            setCookie("_ga", "", -1); // Delete Google Analytics cookie
+            localStorage.removeItem('gdprConsent'); // Remove consent from local storage
+        }
+        if (!consent.advertising) {
+            setCookie("cc_advertising", "", -1); // Set expiry in the past to delete cookie
+            localStorage.removeItem('gdprConsent'); // Remove consent from local storage
+        }
+    
+        // Update UI and load Google Analytics if necessary
         gdprContent.hide();
         gdprDisclaimer.hide();
         loadGoogleAnalytics();
-
+    
+        // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             'event': 'consent_saved',
             'consent': consent
         });
     }
+    
 
     function loadConsent() {
         console.log("Loading consent from local storage");
@@ -119,6 +125,7 @@ $(document).ready(function() {
             if (consent.analytics || consent.advertising) {
                 gdprDisclaimer.hide();
             }
+            // Update checkboxes based on consent
             if (consent.analytics) {
                 $('#analytics').prop('checked', true);
                 $('.gdpr-option[data-type="analytics"]').addClass('selected');
@@ -155,6 +162,7 @@ $(document).ready(function() {
         saveConsent();
     });
 
+    // Add additional dataLayer.push calls here
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'pageview',
@@ -162,6 +170,7 @@ $(document).ready(function() {
         'pageTitle': document.title
     });
 
+    // Scroll event
     $(window).on('scroll', function() {
         window.dataLayer.push({
             'event': 'scroll',
@@ -169,6 +178,7 @@ $(document).ready(function() {
         });
     });
 
+    // Click event
     $(document).on('click', function(event) {
         window.dataLayer.push({
             'event': 'click',
@@ -176,6 +186,7 @@ $(document).ready(function() {
         });
     });
 
+    // Form submission event
     $('form').on('submit', function(event) {
         const formName = $(this).attr('name');
         const formData = $(this).serializeArray().reduce(function(obj, item) {
@@ -192,6 +203,7 @@ $(document).ready(function() {
         console.log("Form submission event pushed:", formName, formData);
     });
 
+    // Search query event
     $('#searchInput').on('change', function() {
         const searchTerm = $(this).val();
         window.dataLayer.push({
@@ -200,12 +212,24 @@ $(document).ready(function() {
         });
     });
 
+    // Video play event
     $('#myVideo').on('play', function() {
         window.dataLayer.push({
             'event': 'videoPlay',
             'videoId': 'myVideo'
         });
     });
+
+    // Custom event example
+    // function triggerCustomEvent() {
+    //     window.dataLayer.push({
+    //         'event': 'myCustomEvent',
+    //         'customData': {
+    //             'field1': 'value1',
+    //             'field2': 'value2'
+    //         }
+    //     });
+    // }
 
     loadConsent();
 });

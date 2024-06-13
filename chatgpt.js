@@ -73,10 +73,10 @@ $(document).ready(function() {
                 'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
 
-            cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-WDPEF2R044', function() {
+            cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
                 window.dataLayer = window.dataLayer || [];
                 gtag('js', new Date());
-                gtag('config', 'G-WDPEF2R044', {
+                gtag('config', 'G-9D3DBN91CX', {
                     'anonymize_ip': true
                 });
                 setUserProperties();

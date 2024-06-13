@@ -1,46 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GDPR Consent Test</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="chatgpt.js" defer></script>
-    <!-- Ensure correct path -->
-     
-  </head>
-  <body>
-    <h1 >testTest</h1>
-    <div class="gdpr-disclaimer" ">This website uses cookies...</div>
-    <button class="gdpr-button">Open Cookie Settings</button>
-    <div class="gdpr-content" style="display: none">
-      <div class="gdpr-option go-2">
-        <ul>
-          <li data-type="analytics" class="gdpr-select">
-            <input type="checkbox" id="analytics" />
-            <label for="analytics"">Analytics</label>
-          </li>
-          <li data-type="advertising" class="gdpr-select">
-            <input type="checkbox" id="advertising" />
-            <label for="advertising"">Advertising</li>
-        </ul>
-      </div>
-      <button class="gb-save">Save Preferences</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Consent Example</title>
+    <style>
+        /* Basic styling for the cookie consent banner */
+        #cookie-consent-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+        #cookie-consent-banner label {
+            margin-right: 10px;
+        }
+        #cookie-consent-banner button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cookie Consent Example</h1>
+
+    <div id="cookie-consent-banner">
+        <p>We use cookies to enhance your browsing experience. Please provide your consent for the following:</p>
+        <div>
+            <label>
+                <input type="checkbox" id="analytics-consent" />
+                Allow analytics cookies
+            </label>
+        </div>
+        <button onclick="submitConsent()">Submit</button>
     </div>
 
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');
 
-    <form id="test-form" name="test-form">
-      <input type="text" id="test-input" name="test-input" placeholder="Enter your name">
-      <button type="submit">Submit</button>
-  </form>
+        // Display the cookie consent banner
+        window.onload = function() {
+            document.getElementById('cookie-consent-banner').style.display = 'block';
+        };
 
+        // Function to handle consent submission
+        function submitConsent() {
+            var analyticsConsent = document.getElementById('analytics-consent').checked;
 
+            if (analyticsConsent) {
+                // User has granted consent for analytics
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted'
+                });
+            } else {
+                // User has denied consent for analytics
+                gtag('consent', 'update', {
+                    'analytics_storage': 'denied'
+                });
+            }
 
+            // Hide the consent banner
+            document.getElementById('cookie-consent-banner').style.display = 'none';
+        }
 
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
 
-    
-<!-- Google tag (gtag.js) -->
+        // Initial consent state (no data collection until user consents)
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied'
+        });
 
-
-  </body>
+        // GA4 configuration (your measurement ID)
+        gtag('config', 'G-9D3DBN91CX');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX"></script>
+</body>
 </html>

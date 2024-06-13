@@ -55,10 +55,6 @@ $(document).ready(function() {
     }
 
     function loadGoogleAnalytics() {
-        updateConsentMode();
-    }
-
-    function updateConsentMode() {
         const analyticsConsent = getCookieValue("cc_analytics") === "1";
         const advertisingConsent = getCookieValue("cc_advertising") === "1";
 
@@ -70,12 +66,13 @@ $(document).ready(function() {
                 dataLayer.push(arguments);
             }
 
-            gtag('consent', 'update', {
+            gtag('consent', 'default', {
                 'ad_storage': advertisingConsent ? 'granted' : 'denied',
                 'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
 
             cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
+                window.dataLayer = window.dataLayer || [];
                 gtag('js', new Date());
                 gtag('config', 'G-9D3DBN91CX', {
                     'anonymize_ip': true

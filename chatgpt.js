@@ -55,31 +55,42 @@ $(document).ready(function() {
     }
 
     function loadGoogleAnalytics() {
-        // Get consent values
+        updateConsentMode();
+    }
+
+    function updateConsentMode() {
         const analyticsConsent = getCookieValue("cc_analytics") === "1";
         const advertisingConsent = getCookieValue("cc_advertising") === "1";
 
         console.log(`Analytics consent: ${analyticsConsent}, Advertising consent: ${advertisingConsent}`);
 
         if (analyticsConsent || advertisingConsent) {
-            // Initialize Google Analytics with Consent Mode
             window.dataLayer = window.dataLayer || [];
             function gtag() {
                 dataLayer.push(arguments);
             }
 
-            gtag('consent', 'default', {
+            gtag('consent', 'update', {
                 'ad_storage': advertisingConsent ? 'granted' : 'denied',
                 'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
 
-            // Load the gtag.js script
             cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
                 gtag('js', new Date());
                 gtag('config', 'G-9D3DBN91CX', {
                     'anonymize_ip': true
                 });
+                setUserProperties();
                 console.log("Google Analytics initialized");
+            });
+        }
+    }
+
+    function setUserProperties() {
+        if (consent.analytics || consent.advertising) {
+            gtag('set', 'user_properties', {
+                'user_id': 'USER_ID',
+                'user_type': 'premium'
             });
         }
     }
@@ -93,7 +104,6 @@ $(document).ready(function() {
         gdprDisclaimer.hide();
         loadGoogleAnalytics();
 
-        // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             'event': 'consent_saved',
@@ -110,7 +120,6 @@ $(document).ready(function() {
             if (consent.analytics || consent.advertising) {
                 gdprDisclaimer.hide();
             }
-            // Update checkboxes based on consent
             if (consent.analytics) {
                 $('#analytics').prop('checked', true);
                 $('.gdpr-option[data-type="analytics"]').addClass('selected');
@@ -147,7 +156,6 @@ $(document).ready(function() {
         saveConsent();
     });
 
-    // Add additional dataLayer.push calls here
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'pageview',
@@ -155,7 +163,6 @@ $(document).ready(function() {
         'pageTitle': document.title
     });
 
-    // Scroll event
     $(window).on('scroll', function() {
         window.dataLayer.push({
             'event': 'scroll',
@@ -163,7 +170,6 @@ $(document).ready(function() {
         });
     });
 
-    // Click event
     $(document).on('click', function(event) {
         window.dataLayer.push({
             'event': 'click',
@@ -171,7 +177,6 @@ $(document).ready(function() {
         });
     });
 
-    // Form submission event
     $('form').on('submit', function(event) {
         const formName = $(this).attr('name');
         const formData = $(this).serializeArray().reduce(function(obj, item) {
@@ -188,7 +193,6 @@ $(document).ready(function() {
         console.log("Form submission event pushed:", formName, formData);
     });
 
-    // Search query event
     $('#searchInput').on('change', function() {
         const searchTerm = $(this).val();
         window.dataLayer.push({
@@ -197,24 +201,12 @@ $(document).ready(function() {
         });
     });
 
-    // Video play event
     $('#myVideo').on('play', function() {
         window.dataLayer.push({
             'event': 'videoPlay',
             'videoId': 'myVideo'
         });
     });
-
-    // Custom event example
-    // function triggerCustomEvent() {
-    //     window.dataLayer.push({
-    //         'event': 'myCustomEvent',
-    //         'customData': {
-    //             'field1': 'value1',
-    //             'field2': 'value2'
-    //         }
-    //     });
-    // }
 
     loadConsent();
 });

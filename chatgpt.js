@@ -18,9 +18,30 @@ $(document).ready(function() {
         var c_value = encodeURIComponent(value) + 
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
                       "; path=/; domain=" + window.location.hostname + 
-                      "; Secure";
+                      "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
+    }
+
+    function deleteCookie(c_name) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() - 1);
+        var c_value = "" + "; expires=" + exdate.toUTCString() + 
+                      "; path=/; domain=" + window.location.hostname + 
+                      "; SameSite=None; Secure";
+        document.cookie = c_name + "=" + c_value;
+        console.log(`Cookie deleted: ${c_name}`);
+    }
+
+    function deleteGACookies() {
+        var cookies = document.cookie.split(';');
+        cookies.forEach(function(cookie) {
+            var trimmedCookie = cookie.trim();
+            if (trimmedCookie.startsWith('_ga')) {
+                var cookieName = trimmedCookie.split('=')[0];
+                deleteCookie(cookieName);
+            }
+        });
     }
 
     function getCookieValue(name) {
@@ -86,37 +107,24 @@ $(document).ready(function() {
 
     function saveConsent() {
         console.log("Saving consent:", consent);
-    
+
         // Update cookies based on consent
         setCookie("cc_analytics", consent.analytics ? "1" : "0", 365);
         setCookie("cc_advertising", consent.advertising ? "1" : "0", 365);
-    
+
         // Delete Google Analytics cookies if analytics consent is denied
         if (!consent.analytics) {
-            // Get all cookies
-            var cookies = document.cookie.split(';');
-    
-            // Loop through cookies
-            cookies.forEach(function(cookie) {
-                var trimmedCookie = cookie.trim();
-                // Check if cookie starts with '_ga'
-                if (trimmedCookie.startsWith('_ga')) {
-                    // Extract cookie name
-                    var cookieName = trimmedCookie.split('=')[0];
-                    // Delete cookie
-                    setCookie(cookieName, "", -1); // Set expiry in the past to delete cookie
-                }
-            });
+            deleteGACookies();
         }
-    
+
         // Save consent to localStorage
         localStorage.setItem('gdprConsent', JSON.stringify(consent));
-    
+
         // Update UI and load Google Analytics if necessary
         gdprContent.hide();
         gdprDisclaimer.hide();
         loadGoogleAnalytics();
-    
+
         // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -124,9 +132,6 @@ $(document).ready(function() {
             'consent': consent
         });
     }
-    
-    
-    
 
     function loadConsent() {
         console.log("Loading consent from local storage");
@@ -231,17 +236,6 @@ $(document).ready(function() {
             'videoId': 'myVideo'
         });
     });
-
-    // Custom event example
-    // function triggerCustomEvent() {
-    //     window.dataLayer.push({
-    //         'event': 'myCustomEvent',
-    //         'customData': {
-    //             'field1': 'value1',
-    //             'field2': 'value2'
-    //         }
-    //     });
-    // }
 
     loadConsent();
 });

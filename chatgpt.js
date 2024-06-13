@@ -91,15 +91,31 @@ $(document).ready(function() {
         setCookie("cc_analytics", consent.analytics ? "1" : "0", 365);
         setCookie("cc_advertising", consent.advertising ? "1" : "0", 365);
     
-        // Delete cookies if consent is denied
+        // Delete Google Analytics cookies if analytics consent is denied
         if (!consent.analytics) {
-            setCookie("cc_analytics", "", -1); // Set expiry in the past to delete cookie
-            setCookie("_ga", "", -1); // Delete Google Analytics cookie
-            localStorage.removeItem('gdprConsent'); // Remove consent from local storage
+            // Get all cookies
+            var cookies = document.cookie.split(';');
+    
+            // Loop through cookies
+            cookies.forEach(function(cookie) {
+                var trimmedCookie = cookie.trim();
+                // Check if cookie starts with '_ga'
+                if (trimmedCookie.startsWith('_ga')) {
+                    // Extract cookie name
+                    var cookieName = trimmedCookie.split('=')[0];
+                    // Delete cookie
+                    setCookie(cookieName, "", -1); // Set expiry in the past to delete cookie
+                }
+            });
+    
+            // Remove consent from local storage
+            localStorage.removeItem('gdprConsent');
         }
+    
+        // Delete advertising cookie if advertising consent is denied
         if (!consent.advertising) {
             setCookie("cc_advertising", "", -1); // Set expiry in the past to delete cookie
-            localStorage.removeItem('gdprConsent'); // Remove consent from local storage
+            localStorage.removeItem('gdprConsent');
         }
     
         // Update UI and load Google Analytics if necessary
@@ -114,6 +130,7 @@ $(document).ready(function() {
             'consent': consent
         });
     }
+    
     
 
     function loadConsent() {

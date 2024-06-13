@@ -107,16 +107,10 @@ $(document).ready(function() {
                     setCookie(cookieName, "", -1); // Set expiry in the past to delete cookie
                 }
             });
-    
-            // Remove consent from local storage
-            localStorage.removeItem('gdprConsent');
         }
     
-        // Delete advertising cookie if advertising consent is denied
-        if (!consent.advertising) {
-            setCookie("cc_advertising", "", -1); // Set expiry in the past to delete cookie
-            localStorage.removeItem('gdprConsent');
-        }
+        // Save consent to localStorage
+        localStorage.setItem('gdprConsent', JSON.stringify(consent));
     
         // Update UI and load Google Analytics if necessary
         gdprContent.hide();
@@ -130,6 +124,7 @@ $(document).ready(function() {
             'consent': consent
         });
     }
+    
     
     
 

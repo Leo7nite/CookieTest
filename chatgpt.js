@@ -12,25 +12,27 @@ $(document).ready(function() {
       advertising: false
     };
 
-    function setCookie(c_name, value, exdays) {
+    function setCookie(c_name, value, exdays, domain) {
         var exdate = new Date();
         exdate.setDate(exdate.getDate() + exdays);
         var c_value = encodeURIComponent(value) + 
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
-                      "; path=/; domain=" + window.location.hostname + 
+                      "; path=/" + 
+                      (domain ? "; domain=" + domain : "") + 
                       "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
-        console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
+        console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}; domain=${domain || 'current'}`);
     }
 
-    function deleteCookie(c_name) {
+    function deleteCookie(c_name, domain) {
         var exdate = new Date();
         exdate.setDate(exdate.getDate() - 1);
         var c_value = "" + "; expires=" + exdate.toUTCString() + 
-                      "; path=/; domain=" + window.location.hostname + 
+                      "; path=/" + 
+                      (domain ? "; domain=" + domain : "") + 
                       "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
-        console.log(`Cookie deleted: ${c_name}`);
+        console.log(`Cookie deleted: ${c_name}; domain=${domain || 'current'}`);
     }
 
     function deleteGACookies() {
@@ -39,7 +41,7 @@ $(document).ready(function() {
             var trimmedCookie = cookie.trim();
             if (trimmedCookie.startsWith('_ga')) {
                 var cookieName = trimmedCookie.split('=')[0];
-                deleteCookie(cookieName);
+                deleteCookie(cookieName, '.cookiestesting7leo.netlify.app');
             }
         });
     }
@@ -110,8 +112,8 @@ $(document).ready(function() {
         console.log("Saving consent:", consent);
 
         // Update cookies based on consent
-        setCookie("cc_analytics", consent.analytics ? "1" : "0", 365);
-        setCookie("cc_advertising", consent.advertising ? "1" : "0", 365);
+        setCookie("cc_analytics", consent.analytics ? "1" : "0", 365, '.cookiestesting7leo.netlify.app');
+        setCookie("cc_advertising", consent.advertising ? "1" : "0", 365, '.cookiestesting7leo.netlify.app');
 
         // Delete Google Analytics cookies if analytics consent is denied
         if (!consent.analytics) {
@@ -222,7 +224,7 @@ $(document).ready(function() {
     });
 
     // Search query event
-    
+   
 
     loadConsent();
 });

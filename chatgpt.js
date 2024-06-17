@@ -97,7 +97,7 @@ $(document).ready(function() {
             // Load the gtag.js script
             cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
                 gtag('js', new Date());
-                gtag('config', 'G-12345ABCDE', { 'debug_mode': true });
+                gtag('config', 'G-9D3DBN91CX', { 'debug_mode': true });
                 gtag('config', 'G-9D3DBN91CX', {
                     'anonymize_ip': true
                 });

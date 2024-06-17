@@ -19,7 +19,7 @@ $(document).ready(function() {
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=None; Secure";
+                      "; SameSite=Strict; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}; domain=${domain || 'current'}`);
     }
@@ -30,7 +30,7 @@ $(document).ready(function() {
         var c_value = "" + "; expires=" + exdate.toUTCString() + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=None; Secure";
+                      "; SameSite=Strict; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie deleted: ${c_name}; domain=${domain || 'current'}`);
     }
@@ -224,21 +224,7 @@ $(document).ready(function() {
     });
 
     // Search query event
-    $('#searchInput').on('change', function() {
-        const searchTerm = $(this).val();
-        window.dataLayer.push({
-            'event': 'searchQuery',
-            'searchTerm': searchTerm
-        });
-    });
-
-    // Video play event
-    $('#myVideo').on('play', function() {
-        window.dataLayer.push({
-            'event': 'videoPlay',
-            'videoId': 'myVideo'
-        });
-    });
+   
 
     loadConsent();
 });

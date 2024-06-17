@@ -19,7 +19,7 @@ $(document).ready(function() {
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=Strict" +
+                      "; SameSite=None" +
                       (location.protocol === 'https:' ? "; Secure" : "");
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}; domain=${domain || 'current'}`);
@@ -31,8 +31,7 @@ $(document).ready(function() {
         var c_value = "" + "; expires=" + exdate.toUTCString() + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=Strict" +
-                      (location.protocol === 'https:' ? "; Secure" : "");
+                      "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie deleted: ${c_name}; domain=${domain || 'current'}`);
     }
@@ -80,12 +79,14 @@ $(document).ready(function() {
     }
 
     function loadGoogleAnalytics() {
+        // Get consent values
         const analyticsConsent = getCookieValue("cc_analytics") === "1";
         const advertisingConsent = getCookieValue("cc_advertising") === "1";
 
         console.log(`Analytics consent: ${analyticsConsent}, Advertising consent: ${advertisingConsent}`);
 
         if (analyticsConsent || advertisingConsent) {
+            // Initialize Google Analytics with Consent Mode
             window.dataLayer = window.dataLayer || [];
             function gtag() {
                 dataLayer.push(arguments);
@@ -96,6 +97,7 @@ $(document).ready(function() {
                 'analytics_storage': analyticsConsent ? 'granted' : 'denied'
             });
 
+            // Load the gtag.js script
             cookieScriptLoadJavaScript('https://www.googletagmanager.com/gtag/js?id=G-9D3DBN91CX', function() {
                 gtag('js', new Date());
                 gtag('config', 'G-9D3DBN91CX', { 'debug_mode': true });
@@ -110,19 +112,24 @@ $(document).ready(function() {
     function saveConsent() {
         console.log("Saving consent:", consent);
 
+        // Update cookies based on consent
         setCookie("cc_analytics", consent.analytics ? "1" : "0", 365, '.cookiestesting7leo.netlify.app');
         setCookie("cc_advertising", consent.advertising ? "1" : "0", 365, '.cookiestesting7leo.netlify.app');
 
+        // Delete Google Analytics cookies if analytics consent is denied
         if (!consent.analytics) {
             deleteGACookies();
         }
 
+        // Save consent to localStorage
         localStorage.setItem('gdprConsent', JSON.stringify(consent));
 
+        // Update UI and load Google Analytics if necessary
         gdprContent.hide();
         gdprDisclaimer.hide();
         loadGoogleAnalytics();
 
+        // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             'event': 'consent_saved',
@@ -139,6 +146,7 @@ $(document).ready(function() {
             if (consent.analytics || consent.advertising) {
                 gdprDisclaimer.hide();
             }
+            // Update checkboxes based on consent
             if (consent.analytics) {
                 $('#analytics').prop('checked', true);
                 $('.gdpr-option[data-type="analytics"]').addClass('selected');
@@ -175,6 +183,7 @@ $(document).ready(function() {
         saveConsent();
     });
 
+    // Add additional dataLayer.push calls here
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'pageview',
@@ -182,6 +191,7 @@ $(document).ready(function() {
         'pageTitle': document.title
     });
 
+    // Scroll event
     $(window).on('scroll', function() {
         window.dataLayer.push({
             'event': 'scroll',
@@ -189,6 +199,7 @@ $(document).ready(function() {
         });
     });
 
+    // Click event
     $(document).on('click', function(event) {
         window.dataLayer.push({
             'event': 'click',
@@ -196,6 +207,7 @@ $(document).ready(function() {
         });
     });
 
+    // Form submission event
     $('form').on('submit', function(event) {
         const formName = $(this).attr('name');
         const formData = $(this).serializeArray().reduce(function(obj, item) {
@@ -211,6 +223,9 @@ $(document).ready(function() {
 
         console.log("Form submission event pushed:", formName, formData);
     });
+
+    // Search query event
+   
 
     loadConsent();
 });

@@ -17,7 +17,7 @@ $(document).ready(function() {
         exdate.setDate(exdate.getDate() + exdays);
         var c_value = encodeURIComponent(value) + 
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
-                      "; path=/; domain=.cookiestesting7leo.netlify.app" + 
+                      "; path=/; domain=" + window.location.hostname + 
                       "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}`);
@@ -27,7 +27,7 @@ $(document).ready(function() {
         var exdate = new Date();
         exdate.setDate(exdate.getDate() - 1);
         var c_value = "" + "; expires=" + exdate.toUTCString() + 
-                      "; path=/; domain=.cookiestesting7leo.netlify.app" + 
+                      "; path=/; domain=" + window.location.hostname + 
                       "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie deleted: ${c_name}`);
@@ -222,21 +222,7 @@ $(document).ready(function() {
     });
 
     // Search query event
-    $('#searchInput').on('change', function() {
-        const searchTerm = $(this).val();
-        window.dataLayer.push({
-            'event': 'searchQuery',
-            'searchTerm': searchTerm
-        });
-    });
-
-    // Video play event
-    $('#myVideo').on('play', function() {
-        window.dataLayer.push({
-            'event': 'videoPlay',
-            'videoId': 'myVideo'
-        });
-    });
+    
 
     loadConsent();
 });

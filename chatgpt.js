@@ -19,7 +19,8 @@ $(document).ready(function() {
                       ((exdays === null) ? "" : "; expires=" + exdate.toUTCString()) + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=Strict; Secure";
+                      "; SameSite=None" +
+                      (location.protocol === 'https:' ? "; Secure" : "");
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie set: ${c_name}=${value}; expires=${exdate.toUTCString()}; domain=${domain || 'current'}`);
     }
@@ -30,7 +31,7 @@ $(document).ready(function() {
         var c_value = "" + "; expires=" + exdate.toUTCString() + 
                       "; path=/" + 
                       (domain ? "; domain=" + domain : "") + 
-                      "; SameSite=Strict; Secure";
+                      "; SameSite=None; Secure";
         document.cookie = c_name + "=" + c_value;
         console.log(`Cookie deleted: ${c_name}; domain=${domain || 'current'}`);
     }

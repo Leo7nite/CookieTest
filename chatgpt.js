@@ -224,7 +224,21 @@ $(document).ready(function() {
     });
 
     // Search query event
-   
+    $('#searchInput').on('change', function() {
+        const searchTerm = $(this).val();
+        window.dataLayer.push({
+            'event': 'searchQuery',
+            'searchTerm': searchTerm
+        });
+    });
+
+    // Video play event
+    $('#myVideo').on('play', function() {
+        window.dataLayer.push({
+            'event': 'videoPlay',
+            'videoId': 'myVideo'
+        });
+    });
 
     loadConsent();
 });

@@ -128,7 +128,7 @@ $(document).ready(function() {
         gdprContent.hide();
         gdprDisclaimer.hide();
         loadGoogleAnalytics();
-
+        
         // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({

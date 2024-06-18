@@ -8,8 +8,8 @@ $(document).ready(function() {
     const saveButton = $('.gb-save');
 
     let consent = {
-      analytics: false,
-      advertising: false
+        analytics: false,
+        advertising: false
     };
 
     function setCookie(c_name, value, exdays, domain) {
@@ -127,7 +127,11 @@ $(document).ready(function() {
         // Update UI and load Google Analytics if necessary
         gdprContent.hide();
         gdprDisclaimer.hide();
-        loadGoogleAnalytics();
+        
+        // Load Google Analytics if consent is given
+        if (consent.analytics || consent.advertising) {
+            loadGoogleAnalytics();
+        }
         
         // Add the dataLayer.push code here
         window.dataLayer = window.dataLayer || [];
@@ -155,7 +159,10 @@ $(document).ready(function() {
                 $('#advertising').prop('checked', true);
                 $('.gdpr-option[data-type="advertising"]').addClass('selected');
             }
-            loadGoogleAnalytics();
+            // Load Google Analytics if consent is given
+            if (consent.analytics || consent.advertising) {
+                loadGoogleAnalytics();
+            }
         } else {
             console.log("No saved consent found");
             gdprContent.show();
@@ -225,7 +232,14 @@ $(document).ready(function() {
     });
 
     // Search query event
-   
+    $('.search-form').on('submit', function(event) {
+        const query = $(this).find('input[name="q"]').val();
+        window.dataLayer.push({
+            'event': 'search',
+            'searchQuery': query
+        });
+        console.log("Search event pushed:", query);
+    });
 
     loadConsent();
 });

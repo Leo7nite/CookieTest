@@ -4,7 +4,7 @@ $(document).ready(function() {
     const gdprContent = $('.gdpr-content');
     const gdprButton = $('.gdpr-button');
     const gdprDisclaimer = $('.gdpr-disclaimer');
-    const gdprOptions = $('.gdpr-option .gdpr-select');
+    const gdprOptions = $('.gdpr-option input[type="checkbox"]');
     const saveButton = $('.gb-save');
 
     let consent = {
@@ -174,15 +174,15 @@ $(document).ready(function() {
         gdprContent.toggle();
     });
 
-    gdprOptions.on('click', function() {
+    gdprOptions.on('change', function() {
         const type = $(this).data('type');
         if (type === 'analytics') {
-            consent.analytics = !consent.analytics;
+            consent.analytics = $(this).is(':checked');
         } else if (type === 'advertising') {
-            consent.advertising = !consent.advertising;
+            consent.advertising = $(this).is(':checked');
         }
-        $(this).toggleClass('selected');
-        console.log("Toggled consent for:", type, consent[type]);
+        $(this).closest('.gdpr-option').toggleClass('selected', $(this).is(':checked'));
+        console.log("Consent updated for:", type, $(this).is(':checked'));
     });
 
     saveButton.on('click', function() {
